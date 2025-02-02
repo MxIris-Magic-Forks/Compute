@@ -51,8 +51,9 @@ class UntypedTable {
 
   public:
     UntypedTable();
-    UntypedTable(hasher custom_hasher, key_equal custom_compare, key_callback _Nullable did_remove_key,
-                 value_callback _Nullable did_remove_value, Heap *_Nullable heap);
+    UntypedTable(hasher _Nullable custom_hasher, key_equal _Nullable custom_compare,
+                 key_callback _Nullable did_remove_key, value_callback _Nullable did_remove_value,
+                 Heap *_Nullable heap);
     ~UntypedTable();
 
     // Lookup
@@ -67,8 +68,7 @@ class UntypedTable {
     bool remove_ptr(const key_type key);
 };
 
-template <typename Key, typename Value> class Table : UntypedTable {
-
+template <typename Key, typename Value> class Table : public UntypedTable {
   public:
     using key_type = Key;
     using value_type = Value;
@@ -88,17 +88,21 @@ template <typename Key, typename Value> class Table : UntypedTable {
 
     // Lookup
 
-    value_type _Nullable lookup(const key_type key, key_type *_Nullable found_key) const noexcept {
+    value_type lookup(const key_type key, key_type *_Nullable found_key) const noexcept {
         auto result =
             UntypedTable::lookup(key, reinterpret_cast<UntypedTable::nullable_key_type *_Nullable>(found_key));
-        return reinterpret_cast<value_type _Nullable>(result);
+        return *(value_type *)&result;
     };
 
-    void for_each(entry_callback _Nonnull body, void const *context) const { UntypedTable::for_each(body, context); };
+    void for_each(entry_callback _Nonnull body, void const *context) const {
+        UntypedTable::for_each((UntypedTable::entry_callback)body, context);
+    };
 
     // Modifying entries
 
-    bool insert(const key_type key, const value_type value) { return UntypedTable::insert(key, value); };
+    bool insert(const key_type key, const value_type value) {
+        return UntypedTable::insert(*(void **)&key, *(void **)&value);
+    };
     bool remove(const key_type key) { return UntypedTable::remove(key); };
     bool remove_ptr(const key_type key) { return UntypedTable::remove_ptr(key); };
 };
