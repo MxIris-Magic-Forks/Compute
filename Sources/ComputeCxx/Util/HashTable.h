@@ -90,11 +90,11 @@ template <typename Key, typename Value> class Table : public UntypedTable {
 
     value_type lookup(const key_type key, key_type *_Nullable found_key) const noexcept {
         auto result =
-            UntypedTable::lookup(key, reinterpret_cast<UntypedTable::nullable_key_type *_Nullable>(found_key));
+            UntypedTable::lookup(*(void **)&key, reinterpret_cast<UntypedTable::nullable_key_type *_Nullable>(found_key));
         return *(value_type *)&result;
     };
 
-    void for_each(entry_callback _Nonnull body, void const *context) const {
+    void for_each(entry_callback _Nonnull body, void const *_Nullable context) const {
         UntypedTable::for_each((UntypedTable::entry_callback)body, context);
     };
 
