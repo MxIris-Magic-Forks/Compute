@@ -433,14 +433,14 @@ class TypeCache {
     bool insert(const key_info *key, const value_info *value) { return _table.insert(key, value); };
 
     key_info *create_key(const metadata *type, const char *type_name) {
-        auto key = reinterpret_cast<TypeCache::key_info *>(_heap.alloc_(sizeof(key_info)));
+        auto key = _heap.alloc<TypeCache::key_info>();
         key->first = type;
         key->second = type_name;
         return key;
     };
 
     value_info *create_value(const metadata *type, metadata::ref_kind ref_kind) {
-        auto value = reinterpret_cast<TypeCache::value_info *>(_heap.alloc_(sizeof(value_info)));
+        auto value = _heap.alloc<TypeCache::value_info>();
         value->first = type;
         value->second = ref_kind;
         return value;
