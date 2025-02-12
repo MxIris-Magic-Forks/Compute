@@ -1,8 +1,8 @@
-#include "HashTable.h"
+#include "Utilities/HashTable.h"
 
 #include <memory>
 
-#include "Heap.h"
+#include "Utilities/Heap.h"
 
 namespace util {
 

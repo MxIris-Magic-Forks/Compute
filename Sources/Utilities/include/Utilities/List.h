@@ -2,11 +2,11 @@
 
 #include <CoreFoundation/CFBase.h>
 
-#include "Util/Heap.h"
+#include "Utilities/Heap.h"
 
 CF_ASSUME_NONNULL_BEGIN
 
-namespace AG {
+namespace util {
 
 /// ForwardList is a linked list container that uses util::Heap to allocate nodes,
 /// reusing previously removed nodes where possible.
