@@ -281,7 +281,7 @@ bool UntypedTable::remove_ptr(key_type key) {
     return false;
 }
 
-void UntypedTable::for_each(entry_callback body, const void *context) const {
+void UntypedTable::for_each(entry_callback body, void *context) const {
     if (_count) {
         for (uint32_t i = 0; !(i >> _bucket_mask_width); i++) {
             for (UntypedTable::HashNode *node = _buckets[i]; node != nullptr; node = node->next) {
