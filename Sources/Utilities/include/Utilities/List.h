@@ -1,6 +1,7 @@
 #pragma once
 
 #include <CoreFoundation/CFBase.h>
+#include <utility>
 
 #include "Utilities/Heap.h"
 
@@ -113,6 +114,6 @@ template <typename T> class ForwardList {
     }
 };
 
-} // namespace AG
+} // namespace util
 
 CF_ASSUME_NONNULL_END
