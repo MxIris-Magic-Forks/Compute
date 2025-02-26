@@ -31,6 +31,14 @@ class Heap {
     void reset(char *_Nullable start, uint64_t capacity);
 };
 
+template <unsigned int _inline_size> class InlineHeap : public Heap {
+  private:
+    char _inline_buffer[_inline_size] = {};
+
+  public:
+    InlineHeap() : Heap(_inline_buffer, _inline_size, 0) {}
+};
+
 } // namespace util
 
 CF_ASSUME_NONNULL_END
